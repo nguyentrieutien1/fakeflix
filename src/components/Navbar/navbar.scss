@@ -1,10 +1,14 @@
 @import '../../scss/mixin';
 @import '../../scss/variables';
 
+.Navbar__navprofile--avatar {
+    border-radius: 100% !important;
+}
+
 .Navbar {
     position: fixed;
     box-sizing: border-box;
-    z-index: 10;
+    z-index: 10000 !important;
     width: 100%;
     height: 70px;
     top: 0;
@@ -12,7 +16,7 @@
     align-items: center;
     justify-content: flex-start;
     padding: 0 4vw;
-    background-image: linear-gradient(to bottom,rgba(0,0,0,.7) 10%,rgba(0,0,0,0));
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, .7) 10%, rgba(0, 0, 0, 0));
     transition: all 0.2s ease-out;
 
     &__fixed {
@@ -36,30 +40,33 @@
         margin: 0;
         padding: 0;
     }
-    
+
     &__navlinks {
         margin-left: 2rem;
-        
+
         &--link {
             display: inline-block;
             margin: 0 12px;
             font-size: 14px;
             text-shadow: 2px 2px 6px rgba($color: $pure-black, $alpha: 0.9);
 
-            @include mq('sm'){
+            @include mq('sm') {
                 font-size: 16px;
             }
-            @include mq('md'){
+
+            @include mq('md') {
                 font-size: 1.8vw;
             }
-            @include mq('lg'){
+
+            @include mq('lg') {
                 font-size: 1.2vw;
                 text-shadow: 2px 2px 2px rgba($color: $black, $alpha: 0.45);
             }
-            @include mq(1330px){
+
+            @include mq(1330px) {
                 font-size: 18px;
             }
-            
+
             a {
                 color: #e5e5e5;
                 text-decoration: none;
@@ -164,15 +171,15 @@
                 padding: 10px 0;
                 min-width: auto;
                 white-space: nowrap;
-                border: 1px solid rgba(255,255,255,0.5);
-                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+                border: 1px solid rgba(255, 255, 255, 0.5);
+                box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
             }
 
             &.active {
                 opacity: 1;
                 pointer-events: all;
             }
-            
+
             li {
                 color: #e5e5e5;
                 padding: 4vw 0;
@@ -217,6 +224,7 @@
                     @include mq('md') {
                         font-size: 1.8vw;
                     }
+
                     @include mq('lg') {
                         font-size: 1.2vw;
                     }
@@ -224,7 +232,7 @@
             }
         }
     }
-    
+
     &__secondarynav {
         margin-left: auto;
     }
@@ -240,7 +248,7 @@
                 transform: rotate(180deg);
             }
         }
-        
+
         &--avatar {
             max-width: 30px;
             width: 100%;
@@ -265,9 +273,9 @@
             padding: 10px 0;
             min-width: auto;
             white-space: nowrap;
-            border: 1px solid rgba(255,255,255,0.5);
-            background-color: rgba(0,0,0,0.9);
-            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background-color: rgba(0, 0, 0, 0.9);
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
             z-index: 1;
             transition: all 0.2s ease-out;
 
@@ -280,16 +288,17 @@
                 top: 55px;
                 pointer-events: all;
             }
-            
+
             li {
                 color: $white;
                 padding: 5px 15px;
                 text-decoration: none;
                 display: block;
-        
+
                 &:hover {
                     text-decoration: underline;
                 }
+
                 a {
                     display: block;
                 }
