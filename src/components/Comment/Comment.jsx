@@ -28,7 +28,6 @@ export default function Comment({ movieId, commentList, getList }) {
           ? currentUser?.photoURL
           : "https://chieuta.com/wp-content/uploads/2018/01/anh-girl-xinh-mac-vay-ngan-360x250.jpg",
       };
-      window.alert(obj);
       db.collection("comment").add(obj);
       setTimeout(() => {
         getList().then(() => {
