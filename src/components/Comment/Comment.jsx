@@ -6,38 +6,61 @@ import { useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { selectCurrentUser } from "./../../redux/auth/auth.selectors";
 import { db } from "../../firebase/firebaseUtils";
+import axios from "axios";
 export default function Comment({ movieId, commentList, getList }) {
-  console.log("====================================");
-  console.log(commentList);
-  console.log("====================================");
   const alert = useAlert();
   const [content, setContent] = useState("");
   const [contentchild, setContentchild] = useState("");
-  const [start] = useState(0);
   const currentUser = useSelector(selectCurrentUser);
   const { displayName, id } = currentUser;
-  const handleSubmit = () => {
-    try {
+  const handleSubmit =async () => {
       alert.info("Commenting . . .");
-      const obj = {
-        movieId,
-        username: displayName,
-        content,
-        start,
-        img: currentUser?.photoURL
-          ? currentUser?.photoURL
-          : "https://chieuta.com/wp-content/uploads/2018/01/anh-girl-xinh-mac-vay-ngan-360x250.jpg",
-      };
+      
+      const formData = new FormData();
+      formData.append('text', content);
+      let start = 1;
+      axios.post('http://192.168.10.108:6868/text_classification', formData).then(r => r.data).then(data => {
+        const result = data?.result[0].toFixed(1);
+        window.alert(result)
+        
+     if(parseFloat(result) <= -1.5) {
+      start = (1)
+      window.alert(1)
+     }
+     else if(-1.5 < parseFloat(result) && parseFloat(result)< -0.5) {
+      start = (2)
+      window.alert(2)
+     }
+     else if(-0.5 <= parseFloat(result)  &&  parseFloat(result) <=0.5) {
+      start = (3)
+      window.alert(3)
+     }
+     else if(0.5 < parseFloat(result) && parseFloat(result) <= 2.0) {
+      start = (4)
+      window.alert(4)
+     }
+     else if(parseFloat(result) > 2.0) {
+      start = (5)
+      window.alert(5)
+     }
+     const obj = {
+      movieId,
+      username: displayName,
+      content,
+      start,
+      img: currentUser?.photoURL
+        ? currentUser?.photoURL
+        : "https://chieuta.com/wp-content/uploads/2018/01/anh-girl-xinh-mac-vay-ngan-360x250.jpg",
+    };
       db.collection("comment").add(obj);
+      
       setTimeout(() => {
         getList().then(() => {
           alert.success("Commented . . .");
           setContent("");
         });
       }, 500);
-    } catch (error) {
-      console.log(error);
-    }
+    })
   };
 
   const handleSubmitComment = (idP, e) => {

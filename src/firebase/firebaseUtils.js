@@ -4,13 +4,13 @@ import "firebase/auth"
 
 // Firebase Configuration Object
 const firebaseConfig = {
-    apiKey: "AIzaSyBOZxu-G9yvpHRlaUqUVgpwjCsqDKybYWw",
-    authDomain: "fakeflix2-d68f4.firebaseapp.com",
-    projectId: "fakeflix2-d68f4",
-    storageBucket: "fakeflix2-d68f4.appspot.com",
-    messagingSenderId: "795118085500",
-    appId: "1:795118085500:web:e2e42efd50ce98b7e430f9",
-    measurementId: "G-CH8W4DSQT4"
+    apiKey: "AIzaSyC0vgMSm4v2sr8HkkX66TqSw2RiP2uv5OA",
+    authDomain: "sbmr-1e2b1.firebaseapp.com",
+    projectId: "sbmr-1e2b1",
+    storageBucket: "sbmr-1e2b1.appspot.com",
+    messagingSenderId: "671421696153",
+    appId: "1:671421696153:web:a6a77a91cebfbf2dba1008",
+    measurementId: "G-DDL0WR3G9L"
 }
 export const deleteUser = id => {
     return firestore.doc(`users/${id}`);
