@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { navbarFadeInVariants } from "../../motionUtils";
 import { PROFILE_PIC_URL } from "../../requests";
 import { FaCaretDown } from "react-icons/fa";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import Searchbar from "../Searchbar/Searchbar";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../redux/auth/auth.selectors";
@@ -22,6 +22,7 @@ const Navbar = () => {
   const profileNavRef = useRef();
   const currentUser = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useOutsideClick(genresNavRef, () => {
     if (genresNav) setGenresNav(false);
@@ -29,7 +30,6 @@ const Navbar = () => {
   useOutsideClick(profileNavRef, () => {
     if (profileNav) setProfileNav(false);
   });
-
   return (
     <>
       <motion.nav
@@ -70,7 +70,7 @@ const Navbar = () => {
             </li>
             <li className="Navbar__navlinks--link">
               <NavLink to="/mylist" activeClassName="activeNavLink">
-                My list
+                My Favorite
               </NavLink>
             </li>
           </ul>
@@ -115,7 +115,7 @@ const Navbar = () => {
                   </li>
                   <li className="Navbar__navlinks--link">
                     <NavLink to="/mylist" activeClassName="activeNavLink">
-                      My list
+                      My Favorite
                     </NavLink>
                   </li>
                 </ul>
@@ -153,12 +153,22 @@ const Navbar = () => {
                     ref={profileNavRef}
                   >
                     {currentUser && (
-                      <li
-                        className="Navbar__navlinks--link"
-                        onClick={() => dispatch(signOutStart())}
-                      >
-                        Sign Out
-                      </li>
+                      <>
+                        <li
+                          className="Navbar__navlinks--link"
+                          onClick={() => dispatch(signOutStart())}
+                        >
+                          Sign Out
+                        </li>
+                        {currentUser?.role === "ADMIN" && (
+                          <li
+                            onClick={() => history.push("/admin")}
+                            className="Navbar__navlinks--link"
+                          >
+                            Admin
+                          </li>
+                        )}
+                      </>
                     )}
                   </ul>
                 )}

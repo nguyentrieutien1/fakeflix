@@ -84,7 +84,6 @@ export default function AccountComponent() {
             role: obj.role,
           })
         );
-
         setTimeout(() => {
           set_obj({
             role: "CUSTOMER",

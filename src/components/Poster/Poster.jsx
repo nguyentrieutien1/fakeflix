@@ -11,6 +11,8 @@ import {
   removeFromFavourites,
 } from "../../redux/favourites/favourites.actions";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useAlert } from "react-alert";
 
 const Poster = (result) => {
   const {
@@ -22,9 +24,12 @@ const Poster = (result) => {
       name,
       genre_ids,
       backdrop_path,
+      id,
     },
     isFavourite,
   } = result;
+
+  const alert = useAlert();
   let fallbackTitle = title || original_title || name || original_name;
   const genresConverted = useGenreConversion(genre_ids);
   const dispatch = useDispatch();
@@ -44,8 +49,20 @@ const Poster = (result) => {
     );
   };
 
-  const handlePlayAction = (event) => {
+  const handlePlayAction = async (event) => {
     event.stopPropagation();
+    try {
+      const result = await axios.get(`
+https://api.themoviedb.org/3/movie/${id}/videos?api_key=8142ea75f701a2eb0735b5713986b770&language=en-US`);
+      const data = await result.data;
+      if (data?.results?.length > 0) {
+        window.open(`https://www.youtube.com/watch?v=${data?.results[1]?.key}`);
+      } else {
+        alert.show("Movie is not trailer !");
+      }
+    } catch (error) {
+      alert.show("Movie is not trailer !");
+    }
   };
 
   return (
@@ -69,7 +86,7 @@ const Poster = (result) => {
           <Link
             className="Poster__info--icon icon--play"
             onClick={handlePlayAction}
-            to={"/play"}
+            to={`#`}
           >
             <FaPlay />
           </Link>

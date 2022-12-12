@@ -128,18 +128,30 @@ export default function CommentUser(props) {
           {!props.isReply && (
             <div className="Comment__item-react">
               <div className="Comment__item-react--like">
+                {/* .not-allowed {cursor: not-allowed;} checkout-button */}
                 <i
-                  className="fa-solid fa-thumbs-up"
-                  style={{ color: props?.isLike && "#4da6ff" }}
+                  className={`fa-solid fa-thumbs-up ${
+                    props.isDisLike && "checkout-button"
+                  }`}
+                  disabled
+                  style={{
+                    color: props?.isLike && "#4da6ff",
+                    cursor: props.isDisLike && "not-allowed",
+                  }}
                   onClick={() => handleLike(props?.id, props?.user_id)}
                 ></i>
                 <span>{props?.like}</span>
               </div>
               <div className="Comment__item-react--disklike">
                 <i
-                  className="fa-solid fa-thumbs-down"
+                  className={`fa-solid fa-thumbs-down ${
+                    props.isLike && "checkout-button"
+                  }`}
                   onClick={() => handleDislike(props?.id, props?.user_id)}
-                  style={{ color: props?.isDisLike && "#4da6ff" }}
+                  style={{
+                    color: props?.isDisLike && "#4da6ff",
+                    cursor: props.isLike && "not-allowed",
+                  }}
                 ></i>
                 <span>{props?.disLike}</span>
               </div>

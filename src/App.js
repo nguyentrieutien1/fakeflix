@@ -21,154 +21,155 @@ import IndexComponent from "./components/Admin/Index/IndexComponent";
 import AccountComponent from "./components/Admin/AccountComponent/AccountComponent";
 import CommentComponent from "./components/Admin/CommentComponent/CommentComponent";
 const App = () => {
-    const currentUser = useSelector(selectCurrentUser);
-    const searchResults = useSelector(selectSearchResults);
-    const dispatch = useDispatch();
-    const location = useLocation();
+  const currentUser = useSelector(selectCurrentUser);
+  const searchResults = useSelector(selectSearchResults);
+  const dispatch = useDispatch();
+  const location = useLocation();
 
-    useEffect(() => {
-        dispatch(checkUserSession());
-    }, [dispatch]);
-    const admins = ["/admin", "/admin/account", "/admin/comment"];
-    return (
-        <div className="App">
-            {!admins.includes(location.pathname) && currentUser ? (
-                <>
-                    <Navbar />
-                    <DetailModal />
-                </>
-            ) : (
-                ""
-            )}
-            <AnimatePresence exitBeforeEnter>
-                <Switch location={location} key={location.pathname}>
-                    {/* ADMIN AREA */}
-                    <Route
-                        exact
-                        path="/admin"
-                        render={(props) =>
-                            currentUser ? (
-                                <IndexComponent>
-                                    <AccountComponent {...props} />
-                                </IndexComponent>
-                            ) : (
-                                <Redirect to="/login" />
-                            )
-                        }
-                    />
-                    <Route
-                        exact
-                        path="/admin/account"
-                        render={(props) =>
-                            currentUser ? (
-                                <IndexComponent>
-                                    <AccountComponent {...props} />
-                                </IndexComponent>
-                            ) : (
-                                <Redirect to="/login" />
-                            )
-                        }
-                    />
-                    <Route
-                        exact
-                        path="/admin/comment"
-                        render={(props) =>
-                            currentUser ? (
-                                <IndexComponent>
-                                    <CommentComponent {...props} />
-                                </IndexComponent>
-                            ) : (
-                                <Redirect to="/login" />
-                            )
-                        }
-                    />
-                    <Route exact path="/">
-                        <Redirect to="/login" />
-                    </Route>
-                    <Route path="/splash" component={SplashAnimation} />
-                    <Route path="/play" component={PlayAnimation} />
-                    <Route
-                        path="/search"
-                        render={() =>
-                            currentUser ? (
-                                searchResults && <Search results={searchResults} />
-                            ) : (
-                                <Redirect to="/login" />
-                            )
-                        }
-                    />
-                    <Route
-                        exact
-                        path="/browse"
-                        render={() =>
-                            currentUser ? <Homepage /> : <Redirect to="/login" />
-                        }
-                    />
-                    <Route
-                        exact
-                        path="/browse/:categoryName"
-                        render={(props) =>
-                            currentUser ? <Category {...props} /> : <Redirect to="/login" />
-                        }
-                    />
+  useEffect(() => {
+    dispatch(checkUserSession());
+  }, [dispatch]);
+  const admins = ["/admin", "/admin/account", "/admin/comment"];
+  return (
+    <div className="App">
+      {!admins.includes(location.pathname) && currentUser ? (
+        <>
+          <Navbar />
+          <DetailModal />
+        </>
+      ) : (
+        ""
+      )}
+      <AnimatePresence exitBeforeEnter>
+        <Switch location={location} key={location.pathname}>
+          {/* ADMIN AREA */}
+          <Route
+            exact
+            path="/admin"
+            render={(props) =>
+              currentUser ? (
+                <IndexComponent>
+                  <AccountComponent {...props} />
+                </IndexComponent>
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/admin/account"
+            render={(props) =>
+              currentUser ? (
+                <IndexComponent>
+                  <AccountComponent {...props} />
+                </IndexComponent>
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/admin/comment"
+            render={(props) =>
+              currentUser ? (
+                <IndexComponent>
+                  <CommentComponent {...props} />
+                </IndexComponent>
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route exact path="/">
+            <Redirect to="/login" />
+          </Route>
+          <Route path="/splash" component={SplashAnimation} />
+          <Route path="/play/:id" component={PlayAnimation} />
+          <Route
+            path="/search"
+            render={() =>
+              currentUser ? (
+                searchResults && <Search results={searchResults} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/browse"
+            render={() =>
+              currentUser ? <Homepage /> : <Redirect to="/login" />
+            }
+          />
+          <Route
+            exact
+            path="/browse/:categoryName"
+            render={(props) =>
+              currentUser ? <Category {...props} /> : <Redirect to="/login" />
+            }
+          />
 
-                    <Route
-                        exact
-                        path="/tvseries"
-                        render={() =>
-                            currentUser ? <TVSeries /> : <Redirect to="/login" />
-                        }
-                    />
-                    <Route
-                        exact
-                        path="/tvseries/:categoryName"
-                        render={(props) =>
-                            currentUser ? <Category {...props} /> : <Redirect to="/login" />
-                        }
-                    />
-                    <Route
-                        exact
-                        path="/movies"
-                        render={() => (currentUser ? <Movies /> : <Redirect to="/login" />)}
-                    />
-                    <Route
-                        exact
-                        path="/movies/:categoryName"
-                        render={(props) =>
-                            currentUser ? <Category {...props} /> : <Redirect to="/login" />
-                        }
-                    />
-                    <Route
-                        exact
-                        path="/popular"
-                        render={() =>
-                            currentUser ? <Popular /> : <Redirect to="/login" />
-                        }
-                    />
-                    <Route
-                        exact
-                        path="/popular/:categoryName"
-                        render={(props) =>
-                            currentUser ? <Category {...props} /> : <Redirect to="/login" />
-                        }
-                    />
-                    <Route
-                        exact
-                        path="/mylist"
-                        render={() => (currentUser ? <MyList /> : <Redirect to="/login" />)}
-                    />
-                    <Route
-                        exact
-                        path="/login"
-                        render={() => (currentUser ? <Redirect to="/splash" /> : <Auth />)}
-                    />
-                    <Route path="*">
-                        <Redirect to="/" />
-                    </Route>
-                </Switch>
-            </AnimatePresence>
-        </div>
-    );
+          <Route
+            exact
+            path="/tvseries"
+            render={() =>
+              currentUser ? <TVSeries /> : <Redirect to="/login" />
+            }
+          />
+          <Route
+            exact
+            path="/tvseries/:categoryName"
+            render={(props) =>
+              currentUser ? <Category {...props} /> : <Redirect to="/login" />
+            }
+          />
+          <Route
+            exact
+            path="/movies"
+            render={() => (currentUser ? <Movies /> : <Redirect to="/login" />)}
+          />
+          <Route
+            exact
+            path="/movies/:categoryName"
+            render={(props) =>
+              currentUser ? <Category {...props} /> : <Redirect to="/login" />
+            }
+          />
+          <Route
+            exact
+            path="/popular"
+            render={() =>
+              currentUser ? <Popular /> : <Redirect to="/login" />
+            }
+          />
+          <Route
+            exact
+            path="/popular/:categoryName"
+            render={(props) =>
+              currentUser ? <Category {...props} /> : <Redirect to="/login" />
+            }
+          />
+          <Route
+            exact
+            path="/mylist"
+            render={() => (currentUser ? <MyList /> : <Redirect to="/login" />)}
+          />
+          <Route
+            exact
+            path="/login"
+            render={() => (currentUser ? <Redirect to="/splash" /> : <Auth />)}
+          />
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+      </AnimatePresence>
+    </div>
+  );
 };
 
 export default App;
+// s

@@ -20,6 +20,8 @@ import {
   selectNetflixMovies,
 } from "../../redux/movies/movies.selectors";
 import { selectNetflixSeries } from "../../redux/series/series.selectors";
+import axios from "axios";
+import { useAlert } from "react-alert";
 
 const Banner = ({ type }) => {
   let selector;
@@ -42,15 +44,30 @@ const Banner = ({ type }) => {
     finalData?.title || finalData?.name || finalData?.original_name;
   const description = truncate(finalData?.overview, 150);
   const dispatch = useDispatch();
-
-  const handlePlayAnimation = (event) => {
+  const alert = useAlert();
+  const handlePlayAnimation = async (event) => {
     event.stopPropagation();
+    // window.location.href = `https://www.youtube.com/watch?v=${finalData?.id}`;
+    try {
+      const result = await axios.get(`
+https://api.themoviedb.org/3/movie/${finalData?.id}/videos?api_key=8142ea75f701a2eb0735b5713986b770&language=en-US`);
+      const data = await result.data;
+      if (data?.results?.length > 0) {
+        window.open(`https://www.youtube.com/watch?v=${data?.results[1]?.key}`);
+      } else {
+        alert.show("Movie is not trailer !");
+      }
+    } catch (error) {
+      alert.show("Movie is not trailer !");
+    }
   };
 
   const handleModalOpening = () => {
     dispatch(showModalDetail({ ...finalData, fallbackTitle }));
   };
-
+  console.log("finalData====================================");
+  console.log(finalData);
+  console.log("finalData====================================");
   return (
     <>
       <motion.section
@@ -92,11 +109,7 @@ const Banner = ({ type }) => {
               variants={bannerFadeInUpVariants}
               className="Banner__buttons"
             >
-              <Link
-                className="Banner__button"
-                onClick={handlePlayAnimation}
-                to={"/play"}
-              >
+              <Link className="Banner__button" onClick={handlePlayAnimation}>
                 <FaPlay />
                 <span>Play</span>
               </Link>

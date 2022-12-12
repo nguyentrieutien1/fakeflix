@@ -157,3 +157,12 @@
     bottom: 0;
     background: $light-black;
 }
+
+.checkout-button {
+
+    pointer-events: none;
+}
+
+.checkout-button:disabled {
+    pointer-events: none;
+}

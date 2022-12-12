@@ -27,8 +27,11 @@ import useOutsideClick from "../../hooks/useOutsideClick";
 import Comment from "../Comment/Comment";
 import { db } from "../../firebase/firebaseUtils";
 import { selectCurrentUser } from "../../redux/auth/auth.selectors";
+import axios from "axios";
+import { useAlert } from "react-alert";
 
 const DetailModal = () => {
+  const alert = useAlert();
   const dispatch = useDispatch();
   const modalClosed = useSelector(selectModalState);
   const modalContent = useSelector(selectModalContent);
@@ -165,9 +168,23 @@ const DetailModal = () => {
     dispatch(removeFromFavourites({ ...modalContent, isFavourite }));
     if (!modalClosed) handleModalClose();
   };
-  const handlePlayAnimation = (event) => {
+  const handlePlayAnimation = async (event) => {
     event.stopPropagation();
-    handleModalClose();
+    try {
+      const result = await axios.get(`
+https://api.themoviedb.org/3/movie/${id}/videos?api_key=8142ea75f701a2eb0735b5713986b770&language=en-US`);
+      const data = await result.data;
+      if (data?.results?.length > 0) {
+        window.open(`https://www.youtube.com/watch?v=${data?.results[1]?.key}`);
+      } else {
+        alert.show("Movie is not trailer !");
+      }
+    } catch (error) {
+      console.log("====================================");
+      console.log(error);
+      console.log("====================================");
+      alert.show("Movie is not trailer !");
+    }
   };
   useOutsideClick(modalRef, () => {
     if (!modalClosed) handleModalClose();
@@ -213,7 +230,7 @@ const DetailModal = () => {
                     <Link
                       className="Modal__image--button"
                       onClick={handlePlayAnimation}
-                      to={"/play"}
+                      to={`#`}
                     >
                       <FaPlay />
                       <span>Play</span>

@@ -21,7 +21,12 @@ export default function IndexComponent(props) {
         <div className="row row_index_container">
           <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div className="header__left px-5">
-              <img src={window.location.origin + "/logo.png"} alt="" />
+              <img
+                onClick={() => history.push("/browse")}
+                src={window.location.origin + "/logo.png"}
+                alt="Admin Logo"
+                style={{ cursor: "pointer" }}
+              />
               <div className="link">
                 <Link to="/admin/account">Account</Link>
                 <Link to="/admin/comment">Comment</Link>
