@@ -27,11 +27,6 @@ const App = () => {
   const location = useLocation();
 
   useEffect(() => {
-    setTimeout(() => {
-      document.title = "Nguyen Thanh Tung";
-    }, 9000);
-  });
-  useEffect(() => {
     dispatch(checkUserSession());
   }, [dispatch]);
   const admins = ["/admin", "/admin/account", "/admin/comment"];

@@ -7,49 +7,53 @@ import { useAlert } from "react-alert";
 import { selectCurrentUser } from "./../../redux/auth/auth.selectors";
 import { db } from "../../firebase/firebaseUtils";
 import axios from "axios";
+// import axios from "axios";
+// import axios from "axios";
 export default function Comment({ movieId, commentList, getList }) {
   const alert = useAlert();
   const [content, setContent] = useState("");
   const [contentchild, setContentchild] = useState("");
   const currentUser = useSelector(selectCurrentUser);
   const { displayName, id } = currentUser;
-  const handleSubmit = async () => {
+
+  const run = async () => {
     alert.info("Commenting . . .");
     const formData = new FormData();
     formData.append("text", content);
-    let start = 1;
+    let star = 1;
+
     axios
       .post("http://192.168.10.108:6868/text_classification", formData)
       .then((r) => r.data)
       .then((data) => {
         const result = data?.result[0].toFixed(1);
         if (parseFloat(result) <= -1.5) {
-          start = 1;
+          star = 1;
           window.alert(1);
         } else if (-1.5 < parseFloat(result) && parseFloat(result) < -0.5) {
-          start = 2;
+          star = 2;
           window.alert(2);
         } else if (-0.5 <= parseFloat(result) && parseFloat(result) <= 0.5) {
-          start = 3;
+          star = 3;
           window.alert(3);
         } else if (0.5 < parseFloat(result) && parseFloat(result) <= 2.0) {
-          start = 4;
+          star = 4;
           window.alert(4);
         } else if (parseFloat(result) > 2.0) {
-          start = 5;
+          star = 5;
           window.alert(5);
         }
         const obj = {
+          userId: currentUser?.id,
           movieId,
           username: displayName,
           content,
-          start,
+          star,
           img: currentUser?.photoURL
             ? currentUser?.photoURL
             : "https://chieuta.com/wp-content/uploads/2018/01/anh-girl-xinh-mac-vay-ngan-360x250.jpg",
         };
         db.collection("comment").add(obj);
-
         setTimeout(() => {
           getList().then(() => {
             alert.success("Commented . . .");
@@ -58,10 +62,49 @@ export default function Comment({ movieId, commentList, getList }) {
         }, 500);
       });
   };
+  const handleSubmit = async () => {
+    try {
+      if (!content) {
+        alert.error("Please Enter Your Comment !!!");
+        return;
+      }
+      const comments = await db.collection("comment").get();
+
+      if (comments?.docs?.length == 0) {
+        run();
+      } else {
+        const check = comments.docs?.some(
+          (comment) =>
+            comment.data()?.movieId == movieId &&
+            comment.data()?.userId == currentUser?.id
+        );
+        if (check) {
+          alert.info("Please don't comment twice");
+        } else {
+          run();
+        }
+        // comments.docs.forEach((comment) => {
+        //   console.log("====================================");
+        //   console.log(comment.data());
+        //   console.log(currentUser?.id);
+        //   console.log(movieId);
+        //   console.log("====================================");
+        //   if (
+        //     comment.data()?.movieId == movieId &&
+        //   ) {
+        //     alert.info("Please don't comment twice");
+        //   } else {
+        //     run();
+        //   }
+        // });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSubmitComment = (idP, e) => {
     e.preventDefault();
-
     alert.info("Commenting . . .");
     const obj = {
       content: contentchild,

@@ -24,9 +24,6 @@ export default function CommentUser(props) {
           checkUser.push(l?.id);
         }
       });
-      console.log("====================================");
-      console.log(checkUser);
-      console.log("====================================");
       if (checkUser.length > 0) {
         for (let i = 0; i < checkUser.length; i++) {
           const like = deleteLike(checkUser[i]);
@@ -42,9 +39,7 @@ export default function CommentUser(props) {
         props.getList();
       });
     } catch (error) {
-      console.log("====================================");
       console.log(error);
-      console.log("====================================");
     }
     // document
     //   .update({ content })
@@ -71,9 +66,6 @@ export default function CommentUser(props) {
           checkUser.push(l?.id);
         }
       });
-      console.log("====================================");
-      console.log(checkUser);
-      console.log("====================================");
       if (checkUser.length > 0) {
         for (let i = 0; i < checkUser.length; i++) {
           const like = deleteDisLike(checkUser[i]);
@@ -89,9 +81,7 @@ export default function CommentUser(props) {
         props.getList();
       });
     } catch (error) {
-      console.log("====================================");
       console.log(error);
-      console.log("====================================");
     }
     // document
     //   .update({ content })
